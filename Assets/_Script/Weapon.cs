@@ -10,8 +10,7 @@ public class Weapon : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            int i = 0;
-            print(++i);
+            other.GetComponent<Target>().PlayHitAnim();
         }
     }
 

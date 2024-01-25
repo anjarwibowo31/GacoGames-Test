@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c03a0e792968e840adeb3267dcf67c9, type: 3}
+  m_Name: Progression
+  m_EditorClassIdentifier: 
+  LevelDataArray:
+  - level: 1
+    expPointRequirement: 100
+    healthIncrement: 20
+    attackIncrement: 5
+  - level: 2
+    expPointRequirement: 120
+    healthIncrement: 20
+    attackIncrement: 5
+  - level: 3
+    expPointRequirement: 120
+    healthIncrement: 25
+    attackIncrement: 0
+  - level: 4
+    expPointRequirement: 150
+    healthIncrement: 25
+    attackIncrement: 10
+  - level: 5
+    expPointRequirement: 150
+    healthIncrement: 30
+    attackIncrement: 0
+  - level: 6
+    expPointRequirement: 180
+    healthIncrement: 35
+    attackIncrement: 15
+  - level: 7
+    expPointRequirement: 180
+    healthIncrement: 35
+    attackIncrement: 0
+  - level: 8
+    expPointRequirement: 200
+    healthIncrement: 40
+    attackIncrement: 15
+  - level: 9
+    expPointRequirement: 200
+    healthIncrement: 45
+    attackIncrement: 20
+  - level: 10
+    expPointRequirement: 250
+    healthIncrement: 50
+    attackIncrement: 30

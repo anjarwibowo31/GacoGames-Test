@@ -13,10 +13,12 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private bool canMove;
     private bool canRotate;
+    private bool intoCombo;
 
     private int ANIM_SPEED_HASH;
     private int ANIM_ATTACK_HASH;
     private int ANIM_DODGE_HASH;
+    private int ANIM_DO_COMBO_HASH;
 
     private void Awake()
     {
@@ -25,6 +27,7 @@ public class PlayerController : MonoBehaviour
         ANIM_SPEED_HASH = Animator.StringToHash("Speed");
         ANIM_ATTACK_HASH = Animator.StringToHash("Attack");
         ANIM_DODGE_HASH = Animator.StringToHash("Dodge");
+        ANIM_DO_COMBO_HASH = Animator.StringToHash("DoCombo");
     }
 
     void Update()
@@ -37,13 +40,28 @@ public class PlayerController : MonoBehaviour
     private void HandleAttack()
     {
         if (Input.GetMouseButtonDown(0))
-            animator.SetTrigger(ANIM_ATTACK_HASH);
+        {
+            if (intoCombo)
+            {
+                animator.SetTrigger(ANIM_DO_COMBO_HASH);
+            }
+            else
+            {
+                animator.SetTrigger(ANIM_ATTACK_HASH);
+            }
+        }
+        //if (Input.GetMouseButtonDown(0) && !intoCombo)
+        //    animator.SetTrigger(ANIM_ATTACK_HASH);
+
+        //if (Input.GetMouseButtonDown(0) && intoCombo)
+        //    animator.SetTrigger(ANIM_DO_COMBO_HASH);
     }
 
     private void HandleDodge()
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
             animator.SetTrigger(ANIM_DODGE_HASH);
+        // Deactive Collider matrix between player and enemy
     }
 
     void HandleMovement()
@@ -88,5 +106,16 @@ public class PlayerController : MonoBehaviour
     {
         EnableMovementAndRotation();
         weapon.DisableCollider();
+    }
+
+    private void EnableIntoCombo()
+    {
+        intoCombo = true;
+    }
+
+    private void DisableIntoCombo()
+    {
+        intoCombo = false;
+
     }
 }
