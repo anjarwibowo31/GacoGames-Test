@@ -58,14 +58,13 @@ public class PlayerController : MonoBehaviour
             if (nearestEnemy != null)
             {
                 Vector3 moveDirection = (nearestEnemy.position - transform.position).normalized;
-
-                if (intoCombo)
-                    animator.SetTrigger(ANIM_DO_COMBO_HASH);
-                else
-                    animator.SetTrigger(ANIM_ATTACK_HASH);
-
                 transform.forward = moveDirection;
             }
+
+            if (intoCombo)
+                animator.SetTrigger(ANIM_DO_COMBO_HASH);
+            else
+                animator.SetTrigger(ANIM_ATTACK_HASH);
         }
     }
 
