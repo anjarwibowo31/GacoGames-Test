@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,15 +11,19 @@ public class GameHUD : MonoBehaviour
     [SerializeField] private Slider expPoint;
     [SerializeField] private TextMeshProUGUI level;
 
-    private PlayerDataManager PDM;
+    private PlayerData PDM;
+
+    int i = 0;
 
     private void Start()
     {
-        PDM = PlayerDataManager.Instance;
-
-
+        PDM = PlayerData.Instance;
+        
+        level.text = PDM.Level.ToString();
         healthUI.maxValue = PDM.Health;
+        healthUI.value = PDM.Health;
         expPoint.maxValue = PDM.ExpRequirement;
+        expPoint.value = 0;
     }
 
     // Event
@@ -30,5 +35,10 @@ public class GameHUD : MonoBehaviour
     private void UpdateExpPoint()
     {
         expPoint.value = PDM.ExpPoint;
+    }
+
+    public void TestButton()
+    {
+        print(++i);
     }
 }

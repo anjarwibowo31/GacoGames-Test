@@ -50821,6 +50821,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 1.7333333
+    functionName: ResetIgnoreLayerCollision
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 1.8333334
     functionName: EnableMovementAndRotation
     data: 

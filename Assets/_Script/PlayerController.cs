@@ -11,7 +11,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private float checkRadius = 6f;
     [SerializeField] private Weapon weapon;
-    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private int playerLayer;
+    [SerializeField] private int enemyLayer;
+    [SerializeField] private LayerMask enemyLayerMask;
 
     private Animator animator;
     private bool canMove;
@@ -48,10 +50,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAttack()
     {
-        Collider[] enemiesNearby = Physics.OverlapSphere(transform.position, checkRadius, enemyLayer);
+        Collider[] enemiesNearby = Physics.OverlapSphere(transform.position, checkRadius, enemyLayerMask);
         Transform nearestEnemy = FindNearestEnemy(enemiesNearby);
-
-        
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -96,8 +96,12 @@ public class PlayerController : MonoBehaviour
     private void HandleDodge()
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
             animator.SetTrigger(ANIM_DODGE_HASH);
+            Physics.IgnoreLayerCollision(playerLayer, enemyLayer, true);
+        }
         // Deactive Collider matrix between player and enemy
+
     }
 
     void HandleMovement()
@@ -142,6 +146,10 @@ public class PlayerController : MonoBehaviour
     {
         EnableMovementAndRotation();
         weapon.DisableCollider();
+        DisableIntoCombo();
+
+        animator.ResetTrigger(ANIM_ATTACK_HASH);
+        animator.ResetTrigger(ANIM_DO_COMBO_HASH);
     }
 
     private void EnableIntoCombo()
@@ -152,6 +160,10 @@ public class PlayerController : MonoBehaviour
     private void DisableIntoCombo()
     {
         intoCombo = false;
+    }
 
+    private void ResetIgnoreLayerCollision()
+    {
+        Physics.IgnoreLayerCollision(playerLayer, enemyLayer, false);
     }
 }

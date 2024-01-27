@@ -15,8 +15,8 @@ MonoBehaviour:
   LevelDataArray:
   - level: 1
     expPointRequirement: 100
-    healthIncrement: 20
-    attackIncrement: 5
+    healthIncrement: 200
+    attackIncrement: 40
   - level: 2
     expPointRequirement: 120
     healthIncrement: 20
@@ -50,6 +50,6 @@ MonoBehaviour:
     healthIncrement: 45
     attackIncrement: 20
   - level: 10
-    expPointRequirement: 250
+    expPointRequirement: 0
     healthIncrement: 50
     attackIncrement: 30
