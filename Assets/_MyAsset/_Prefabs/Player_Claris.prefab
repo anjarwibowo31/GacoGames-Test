@@ -2389,7 +2389,6 @@ GameObject:
   - component: {fileID: 8520391242494000332}
   - component: {fileID: 8520391242494000333}
   - component: {fileID: 8520391242494000334}
-  - component: {fileID: 8520391242494000329}
   - component: {fileID: 1104549131}
   m_Layer: 3
   m_Name: Player_Claris
@@ -2482,25 +2481,12 @@ MonoBehaviour:
   moveSpeed: 5
   rotationSpeed: 5
   checkRadius: 6
-  weapon: {fileID: 8520391242494000329}
+  weapon: {fileID: 0}
   playerLayer: 3
   enemyLayer: 6
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 64
---- !u!114 &8520391242494000329
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7325013140987011905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3296934ba21badb428a8ef1a09e2c28b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponCollider: {fileID: 8520391243869812766}
 --- !u!114 &1104549131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3102,7 +3088,7 @@ BoxCollider:
   m_GameObject: {fileID: 7325013140332160751}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.0054735225, y: 0.00086124544, z: 0.025442297}
   m_Center: {x: -0.000000004458332, y: -0.000000011020625, z: -0.015887016}

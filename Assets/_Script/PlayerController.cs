@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
     private bool canMove;
     private bool canRotate;
     private bool intoCombo;
-    private float checkHeight;
 
     private int ANIM_SPEED_HASH;
     private int ANIM_ATTACK_HASH;
@@ -36,13 +35,13 @@ public class PlayerController : MonoBehaviour
         ANIM_DO_COMBO_HASH = Animator.StringToHash("DoCombo");
     }
 
-    private void Start()
-    {
-        checkHeight = checkRadius / 2;
-    }
-
     void Update()
     {
+        if (PlayerData.Instance.IsDead)
+        {
+            animator.Play("ANIM_Claris_Die_01");
+            return;
+        }
         HandleMovement();
         HandleDodge();
         HandleAttack();
@@ -100,8 +99,6 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger(ANIM_DODGE_HASH);
             Physics.IgnoreLayerCollision(playerLayer, enemyLayer, true);
         }
-        // Deactive Collider matrix between player and enemy
-
     }
 
     void HandleMovement()

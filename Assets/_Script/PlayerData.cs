@@ -9,15 +9,17 @@ public class PlayerData : MonoBehaviour, IDamageable
 {
     public static PlayerData Instance { get; set; }
 
+    public event Action OnGetDamage;
+
     public int Level { get; set; }
     public float Health { get; set; }
     public float MaxHealth { get; set; }
     public float ExpPoint { get; set; }
     public float ExpRequirement { get; set; }
     public float Damage { get; set; }
+    public bool IsDead { get; set; }
 
     // test
-    [SerializeField] private int startingLevel = 1;
     [SerializeField] private ProgressionSO progressionSO;
 
     private Dictionary<int, ProgressionSO.LevelData> levelDataDictionary = new();
@@ -27,13 +29,12 @@ public class PlayerData : MonoBehaviour, IDamageable
         if (Instance == null) Instance = this;
         else Destroy(this.gameObject);
 
-
         foreach (ProgressionSO.LevelData levelData in progressionSO.LevelDataArray)
         {
             levelDataDictionary.Add(levelData.level, levelData);
         }
 
-
+        IsDead = false;
         Level = 1;
         Health = levelDataDictionary[Level].healthIncrement;
         MaxHealth = levelDataDictionary[Level].healthIncrement;
@@ -45,7 +46,11 @@ public class PlayerData : MonoBehaviour, IDamageable
     public void GetDamage(float damage)
     {
         Health -= damage;
-        // call event OnDamage
+        OnGetDamage?.Invoke();
+        if (Health <= 0)
+        {
+            IsDead = true;
+        }
     }
 
     public void GetExpPoint(float expAmount)

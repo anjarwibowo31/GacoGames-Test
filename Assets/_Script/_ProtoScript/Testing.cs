@@ -20,5 +20,10 @@ public class Testing : MonoBehaviour
         {
             Time.timeScale = defaultTimeScale;
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            PlayerData.Instance.GetDamage(10);
+        }
     }
 }

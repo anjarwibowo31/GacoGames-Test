@@ -9,13 +9,11 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.TryGetComponent<EnemyController>(out EnemyController component))
         {
-            //other.GetComponent<Target>().PlayHitAnim();
-            PlayerData.Instance.ExpPoint += 20f;
-
+            print(PlayerData.Instance.Damage);
+            component.GetHit(PlayerData.Instance.Damage);
         }
-        print(PlayerData.Instance.ExpPoint);
     }
 
     public void EnableCollider()

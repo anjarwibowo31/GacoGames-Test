@@ -8,32 +8,88 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float chaseRadius;
     [SerializeField] private LayerMask playerLayerMask;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float attackRadius;
+    [SerializeField] private Collider swordCollider;
 
-    private Vector3 playerPos;
+    private Animator anim;
+    private int ANIM_BOGU_IDLE_HASH;
+    private int ANIM_BOGU_ATTACK_HASH;
+    private int ANIM_BOGU_DEATH_HASH;
+    private int ANIM_BOGU_HIT_HASH;
+
+    private bool isFreeMove = true;
+
+    private Transform playerTransform;
+    private EnemyData enemyData;
 
     private void Start()
     {
-        playerPos = PlayerData.Instance.transform.position;
+        playerTransform = PlayerData.Instance.transform;
+        anim = GetComponent<Animator>();
+        enemyData = GetComponent<EnemyData>();
     }
 
     private void Update()
     {
-        float playerDistance = Vector3.Distance(transform.position, playerPos);
+        float playerDistance = Vector3.Distance(transform.position, playerTransform.position);
 
-        Debug.Log(playerDistance);
-        if (playerDistance < chaseRadius)
+        if (!isFreeMove) return;
+        if (playerDistance < chaseRadius && playerDistance > attackRadius)
         {
             ChasePlayer();
-            print("AAA");
         }
+        else if (playerDistance < attackRadius)
+        {
+            AttackPlayer();
+        }
+        else
+        {
+            anim.Play("Sword_Idle");
+        }
+    }
+
+    private void AttackPlayer()
+    {
+        Vector3 direction = (playerTransform.position - transform.position).normalized;
+        transform.forward = direction;
+        anim.Play("Sword_Attack");
+    }
+
+    public void EnableCollider()
+    {
+        swordCollider.enabled = true;
+    }
+
+    public void DisableCollider()
+    {
+        swordCollider.enabled = false;
     }
 
     private void ChasePlayer()
     {
-        {
-            Vector3 direction = (playerPos - transform.position).normalized;
-            transform.forward = direction;
-            transform.Translate(direction * moveSpeed * Time.deltaTime);
-        }
+        Vector3 direction = (playerTransform.position - transform.position).normalized;
+        transform.forward = direction;
+
+        transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
+        anim.Play("Sword_Run");
+    }
+
+    public void GetHit(float damage)
+    {
+        isFreeMove = false;
+        anim.Play("Normal_Hit");
+        enemyData.GetDamage(damage);
+    }
+
+    public void FreeMove()
+    {
+        isFreeMove = true;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, chaseRadius);
+        Gizmos.DrawWireSphere(transform.position, attackRadius);
     }
 }
