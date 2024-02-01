@@ -11,14 +11,6 @@ public class EnemyData : MonoBehaviour, IDamageable
     public float Damage { get; set; }
     public bool IsDead { get; set; }
 
-    private WaveManager wm;
-
-    private void Start()
-    {
-        wm = WaveManager.Instance;
-        Health = wm.LevelDataDictionary[wm.CurrentWave].health;
-    }
-
     public void GetDamage(float damage)
     {
         Health -= damage;

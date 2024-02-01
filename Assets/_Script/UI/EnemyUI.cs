@@ -9,20 +9,24 @@ public class EnemyUI : MonoBehaviour
 
     [SerializeField] private EnemyData enemyData;
 
+    private Transform mainCameraTransform;
+
     private void Start()
     {
+        mainCameraTransform = Camera.main.transform;
+
         enemyData.OnGetDamage += EnemyData_OnGetDamage;
 
-        healthBar.maxValue = enemyData.Health;
+        //healthBar.maxValue = enemyData.Health;
+    }
+    private void LateUpdate()
+    {
+        Vector3 lookAtPos = new Vector3(transform.position.x, mainCameraTransform.position.y, mainCameraTransform.position.z);
+        transform.LookAt(lookAtPos);
+
+        transform.Rotate(0, 180, 0);
     }
 
-    private void Update()
-    {
-        if (healthBar.maxValue <= 5)
-        {
-            healthBar.maxValue = enemyData.Health;
-        }
-    }
     private void EnemyData_OnGetDamage()
     {
         UpdateHealthBar();
@@ -30,6 +34,6 @@ public class EnemyUI : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-        healthBar.value = enemyData.Health;
+        //healthBar.value = enemyData.Health;
     }
 }

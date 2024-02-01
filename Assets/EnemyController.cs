@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MoveableEntity
 {
     [SerializeField] private float chaseRadius;
     [SerializeField] private LayerMask playerLayerMask;
@@ -17,13 +17,13 @@ public class EnemyController : MonoBehaviour
     private int ANIM_BOGU_DEATH_HASH;
     private int ANIM_BOGU_HIT_HASH;
 
-    private bool isFreeMove = true;
-
     private Transform playerTransform;
     private EnemyData enemyData;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         playerTransform = PlayerData.Instance.transform;
         anim = GetComponent<Animator>();
         enemyData = GetComponent<EnemyData>();
@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour
     {
         float playerDistance = Vector3.Distance(transform.position, playerTransform.position);
 
-        if (!isFreeMove) return;
+        if (!IsMoveable) return;
         if (playerDistance < chaseRadius && playerDistance > attackRadius)
         {
             ChasePlayer();
@@ -76,14 +76,14 @@ public class EnemyController : MonoBehaviour
 
     public void GetHit(float damage)
     {
-        isFreeMove = false;
+        IsMoveable = false;
         anim.Play("Normal_Hit");
         enemyData.GetDamage(damage);
     }
 
     public void FreeMove()
     {
-        isFreeMove = true;
+        IsMoveable = true;
     }
 
     private void OnDrawGizmos()

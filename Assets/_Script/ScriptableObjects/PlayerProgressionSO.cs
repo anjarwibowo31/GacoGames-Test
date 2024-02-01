@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Progression", menuName = "Player Data")]
-public class ProgressionSO : ScriptableObject
+[CreateAssetMenu(fileName = "PlayerProgression", menuName = "Player Progression")]
+public class PlayerProgressionSO : ScriptableObject
 {
     public LevelData[] LevelDataArray;
 

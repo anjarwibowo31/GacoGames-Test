@@ -20,16 +20,16 @@ public class PlayerData : MonoBehaviour, IDamageable
     public bool IsDead { get; set; }
 
     // test
-    [SerializeField] private ProgressionSO progressionSO;
+    [SerializeField] private PlayerProgressionSO progressionSO;
 
-    private Dictionary<int, ProgressionSO.LevelData> levelDataDictionary = new();
+    private Dictionary<int, PlayerProgressionSO.LevelData> levelDataDictionary = new();
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(this.gameObject);
 
-        foreach (ProgressionSO.LevelData levelData in progressionSO.LevelDataArray)
+        foreach (PlayerProgressionSO.LevelData levelData in progressionSO.LevelDataArray)
         {
             levelDataDictionary.Add(levelData.level, levelData);
         }

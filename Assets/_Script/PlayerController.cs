@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MoveableEntity
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 5f;
@@ -35,6 +35,11 @@ public class PlayerController : MonoBehaviour
         ANIM_DO_COMBO_HASH = Animator.StringToHash("DoCombo");
     }
 
+    protected override void Start()
+    {
+        base.Start();
+    }
+
     void Update()
     {
         if (PlayerData.Instance.IsDead)
@@ -42,6 +47,8 @@ public class PlayerController : MonoBehaviour
             animator.Play("ANIM_Claris_Die_01");
             return;
         }
+
+        if (!IsMoveable) return;
         HandleMovement();
         HandleDodge();
         HandleAttack();
