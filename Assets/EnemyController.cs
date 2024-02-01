@@ -19,6 +19,7 @@ public class EnemyController : MoveableEntity
 
     private Transform playerTransform;
     private EnemyData enemyData;
+    private bool isAttacking = false;
 
     protected override void Start()
     {
@@ -34,7 +35,7 @@ public class EnemyController : MoveableEntity
         float playerDistance = Vector3.Distance(transform.position, playerTransform.position);
 
         if (!IsMoveable) return;
-        if (playerDistance < chaseRadius && playerDistance > attackRadius)
+        if (playerDistance < chaseRadius && playerDistance > attackRadius && !isAttacking)
         {
             ChasePlayer();
         }
@@ -50,6 +51,7 @@ public class EnemyController : MoveableEntity
 
     private void AttackPlayer()
     {
+        IsMoveable = false;
         Vector3 direction = (playerTransform.position - transform.position).normalized;
         transform.forward = direction;
         anim.Play("Sword_Attack");

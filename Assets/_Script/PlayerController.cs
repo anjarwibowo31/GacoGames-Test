@@ -42,11 +42,11 @@ public class PlayerController : MoveableEntity
 
     void Update()
     {
-        if (PlayerData.Instance.IsDead)
-        {
-            animator.Play("ANIM_Claris_Die_01");
-            return;
-        }
+        //if (PlayerData.Instance.IsDead)
+        //{
+        //    animator.Play("ANIM_Claris_Die_01");
+        //    return;
+        //}
 
         if (!IsMoveable) return;
         HandleMovement();
