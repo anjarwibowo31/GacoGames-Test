@@ -55,18 +55,17 @@ public class GameplaySystem : MonoBehaviour
     {
         GameManager.OnLoadingStartEvent += GameManager_OnLoadingStartEvent;
 
+        CurrentWave = 1;
         maxWave = waveDataSO.SingleWaveDataArray.Length;
     }
 
     private void GameManager_OnLoadingStartEvent()
     {
-        CurrentWave = 1;
-
         // Update() loop prevention
         if (wasCalled) return;
         wasCalled = true;
 
-        // SETUP POOLING UNTUK ENEMY
+        // SET UP POOLING UNTUK ENEMY
         for (int i = 0; i < 10; i++)
         {
             GameObject gameObject = Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity, enemyParentObject);
@@ -82,6 +81,8 @@ public class GameplaySystem : MonoBehaviour
         int enemyCount = WaveDataDic[currentWave].enemyCount;
         int enemyLevel = WaveDataDic[currentWave].enemyLevel;
 
+        EnemyProgressionSO.LevelData enemyData = EnemyProgressDic[enemyLevel];
+
         GetSpawnLocation?.Invoke(WaveDataDic[currentWave].enemyCount);
 
         List<Transform> tempLocList = new(SpawnLocationList);
@@ -91,6 +92,8 @@ public class GameplaySystem : MonoBehaviour
             GameObject enemy = enemyDictionary[i];
             enemy.transform.position = tempLocList[i].position;
             enemy.SetActive(true);
+
+            enemy.GetComponent<EnemyData>().SetupData(enemyData);
         }
     }
 }

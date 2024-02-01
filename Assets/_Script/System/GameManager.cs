@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public enum GameState
@@ -20,7 +21,6 @@ public class GameManager : MonoBehaviour
 
     public static event Action OnLoadingStartEvent;
     public static event Action OnLoadingEndEvent;
-
 
     public GameState CurrentGameState { get; set; }
 

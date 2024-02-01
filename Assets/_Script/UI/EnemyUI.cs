@@ -1,6 +1,8 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class EnemyUI : MonoBehaviour
 {
@@ -11,14 +13,25 @@ public class EnemyUI : MonoBehaviour
 
     private Transform mainCameraTransform;
 
-    private void Start()
+    private void Awake()
     {
         mainCameraTransform = Camera.main.transform;
 
         enemyData.OnGetDamage += EnemyData_OnGetDamage;
-
-        //healthBar.maxValue = enemyData.Health;
+        enemyData.OnSetupData += EnemyData_OnSetupData;
     }
+
+    private void EnemyData_OnSetupData(EnemyProgressionSO.LevelData enemyData)
+    {
+        healthBar.maxValue = enemyData.health;
+        healthBar.value = enemyData.health;
+        levelText.text = enemyData.level.ToString();
+    }
+
+    private void EnemyData_OnSetupData()
+    {
+    }
+
     private void LateUpdate()
     {
         Vector3 lookAtPos = new Vector3(transform.position.x, mainCameraTransform.position.y, mainCameraTransform.position.z);
@@ -27,13 +40,9 @@ public class EnemyUI : MonoBehaviour
         transform.Rotate(0, 180, 0);
     }
 
-    private void EnemyData_OnGetDamage()
+    private void EnemyData_OnGetDamage(float currentHealth)
     {
-        UpdateHealthBar();
-    }
-
-    private void UpdateHealthBar()
-    {
-        //healthBar.value = enemyData.Health;
+        print($"Got damage, current Health is {currentHealth}");
+        healthBar.value = currentHealth;
     }
 }
