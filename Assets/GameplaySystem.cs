@@ -90,6 +90,7 @@ public class GameplaySystem : MonoBehaviour
         {
             GameObject enemy = enemyDictionary[i];
             enemy.transform.position = tempLocList[i].position;
+            enemy.SetActive(true);
         }
     }
 }
