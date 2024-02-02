@@ -20,7 +20,7 @@ MonoBehaviour:
   - level: 2
     expPointRequirementIncrement: 100
     healthIncrement: 20
-    attackIncrement: 5
+    attackIncrement: 3
   - level: 3
     expPointRequirementIncrement: 125
     healthIncrement: 25
@@ -28,7 +28,7 @@ MonoBehaviour:
   - level: 4
     expPointRequirementIncrement: 125
     healthIncrement: 25
-    attackIncrement: 10
+    attackIncrement: 4
   - level: 5
     expPointRequirementIncrement: 150
     healthIncrement: 30
@@ -36,7 +36,7 @@ MonoBehaviour:
   - level: 6
     expPointRequirementIncrement: 150
     healthIncrement: 35
-    attackIncrement: 15
+    attackIncrement: 5
   - level: 7
     expPointRequirementIncrement: 175
     healthIncrement: 35
@@ -44,12 +44,12 @@ MonoBehaviour:
   - level: 8
     expPointRequirementIncrement: 175
     healthIncrement: 40
-    attackIncrement: 15
+    attackIncrement: 6
   - level: 9
     expPointRequirementIncrement: 200
     healthIncrement: 45
-    attackIncrement: 20
+    attackIncrement: 7
   - level: 10
     expPointRequirementIncrement: 200
     healthIncrement: 50
-    attackIncrement: 30
+    attackIncrement: 8
