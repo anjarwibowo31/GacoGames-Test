@@ -19,14 +19,15 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; set; }
 
-    public static event Action OnLoadingStartEvent;
-    public static event Action OnLoadingEndEvent;
+    public static event Action OnLoadingEvent;
+    public static event Action OnPlayEventStart;
+    public static event Action OnWaveTransitionEvent;
 
     public GameState CurrentGameState { get; set; }
 
-    [SerializeField] private float loadingCountdown = 5;
+    [SerializeField] private float loadingCountdownDuration = 3;
 
-    private bool isOnceCalledEventHandled = false;
+    private float loadingCountdown;
 
     private void Awake()
     {
@@ -45,6 +46,8 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else if (Instance != this) Destroy(this.gameObject);
+
+        loadingCountdown = loadingCountdownDuration;
     }
 
     private void Update()
@@ -52,30 +55,65 @@ public class GameManager : MonoBehaviour
         switch (CurrentGameState)
         {
             case GameState.MainMenu:
-                break;
+                {
+                    // MainMenu logic here
+                    break;
+                }
             case GameState.GameLoading:
-
-                loadingCountdown -= Time.deltaTime;
-
-                if (loadingCountdown >= 0)
                 {
-                    OnLoadingStartEvent?.Invoke();
+                    Loading(OnLoadingEvent);
+                    break;
                 }
-                else if (loadingCountdown < 0)
-                {
-                    CurrentGameState = GameState.GamePlay;
-                    OnLoadingEndEvent?.Invoke();
-                }
-                break;
             case GameState.GamePlay:
-                break;
+                {
+                    if (GameplaySystem.Instance.CurrentWaveEnemyList.Count == 0)
+                    {
+                        StartCoroutine(EndWaveCoroutine());
+                    }
+                    break;
+                }
+            case GameState.GameWaveTransition:
+                {
+                    FindObjectOfType<PlayerController>().NormalizeAnimation();
+                    Loading(OnWaveTransitionEvent);
+                    break;
+                }
             case GameState.GamePause:
-                break;
+                {
+                    // GamePause logic here
+                    break;
+                }
             case GameState.GameOver:
-                break;
+                {
+                    // GameOver logic here
+                    break;
+                }
         }
 
         print(CurrentGameState);
+    }
+
+    private IEnumerator EndWaveCoroutine()
+    {
+        yield return new WaitForSeconds(5f);
+        loadingCountdown = loadingCountdownDuration;
+        CurrentGameState = GameState.GameWaveTransition;
+    }
+
+    private void Loading(Action onEvent)
+    {
+        loadingCountdown -= Time.deltaTime;
+
+        if (loadingCountdown >= 0)
+        {
+            onEvent?.Invoke();
+        }
+        else if (loadingCountdown < 0)
+        {
+            CurrentGameState = GameState.GamePlay;
+            loadingCountdown = loadingCountdownDuration;
+            OnPlayEventStart?.Invoke();
+        }
     }
 
     public void LoadMainMenu()
@@ -86,7 +124,6 @@ public class GameManager : MonoBehaviour
 
     public void LoadNewGame()
     {
-        isOnceCalledEventHandled = false;
         CurrentGameState = GameState.GameLoading;
         SceneManager.LoadScene("GameScene");
     }

@@ -17,8 +17,6 @@ public class EnemySpawnLocation : MonoBehaviour
         }
 
         GameplaySystem.Instance.GetSpawnLocation += GameplaySystem_GetSpawnLocation;
-
-        print(spawnLocationList.Count);
     }
 
     private void GameplaySystem_GetSpawnLocation(int enemyCount)
@@ -27,11 +25,10 @@ public class EnemySpawnLocation : MonoBehaviour
 
         List<Transform> tempValidList = new();
 
-        foreach(Transform t in spawnLocationList)
+        foreach (Transform t in spawnLocationList)
         {
             bool validLocation;
             validLocation = t.GetComponent<CheckCollision>().IsValidLocation;
-            print(validLocation);
 
             if (validLocation)
             {
@@ -39,7 +36,6 @@ public class EnemySpawnLocation : MonoBehaviour
             }
         }
 
-        print($"valid list is {tempValidList.Count}");
         GameplaySystem.SpawnLocationList = GetRandomObjects(tempValidList, enemyCount);
     }
 

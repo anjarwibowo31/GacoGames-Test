@@ -10,7 +10,7 @@ public class PlayerController : MoveableEntity
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private float checkRadius = 6f;
-    [SerializeField] private Weapon weapon;
+    [SerializeField] private PlayerWeapon weapon;
     [SerializeField] private int playerLayer;
     [SerializeField] private int enemyLayer;
     [SerializeField] private LayerMask enemyLayerMask;
@@ -42,11 +42,11 @@ public class PlayerController : MoveableEntity
 
     void Update()
     {
-        //if (PlayerData.Instance.IsDead)
-        //{
-        //    animator.Play("ANIM_Claris_Die_01");
-        //    return;
-        //}
+        if (PlayerData.Instance.IsDead)
+        {
+            animator.Play("ANIM_Claris_Die_01");
+            return;
+        }
 
         if (!IsMoveable) return;
         HandleMovement();
@@ -124,6 +124,15 @@ public class PlayerController : MoveableEntity
         }
 
         animator.SetFloat(ANIM_SPEED_HASH, moveDirection.magnitude);
+    }
+
+    public void NormalizeAnimation()
+    {
+        animator.ResetTrigger(ANIM_DO_COMBO_HASH);
+        animator.ResetTrigger(ANIM_ATTACK_HASH);
+        animator.ResetTrigger(ANIM_DODGE_HASH);
+        animator.SetFloat(ANIM_SPEED_HASH, 0);
+        animator.Play("Combat_Idle");
     }
 
 

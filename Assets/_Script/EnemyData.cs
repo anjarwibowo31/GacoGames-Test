@@ -10,20 +10,24 @@ public class EnemyData : MonoBehaviour, IDamageable
     public float Health { get; set; }
     public float MaxHealth { get; set; }
     public float Damage { get; set; }
+    public float ExpPointIncrement { get; set; }
     public bool IsDead { get; set; }
+
+    private void Start()
+    {
+        
+    }
 
     public void GetDamage(float damage)
     {
-        print($"Health before damage is {Health}");
-
         Health -= damage;
-
-        print($"Health after damage is {Health}");
 
         OnGetDamage.Invoke(Health);
 
-        if (Health < MaxHealth)
+        if (Health <= 0)
         {
+            PlayerData.Instance.GetExpPoint(ExpPointIncrement);
+            GameplaySystem.Instance.CurrentWaveEnemyList.Remove(this.gameObject);
             IsDead = true;
         }
     }
@@ -34,6 +38,7 @@ public class EnemyData : MonoBehaviour, IDamageable
         MaxHealth = enemyData.health;
         Health = enemyData.health;
         Damage = enemyData.attack;
+        ExpPointIncrement = enemyData.expPointIncrement;
         IsDead = false;
 
         OnSetupData.Invoke(enemyData);

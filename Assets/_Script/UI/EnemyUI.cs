@@ -23,13 +23,14 @@ public class EnemyUI : MonoBehaviour
 
     private void EnemyData_OnSetupData(EnemyProgressionSO.LevelData enemyData)
     {
+        foreach (Transform t in transform)
+        {
+            t.gameObject.SetActive(true);
+        }
+
         healthBar.maxValue = enemyData.health;
         healthBar.value = enemyData.health;
         levelText.text = enemyData.level.ToString();
-    }
-
-    private void EnemyData_OnSetupData()
-    {
     }
 
     private void LateUpdate()
@@ -38,11 +39,18 @@ public class EnemyUI : MonoBehaviour
         transform.LookAt(lookAtPos);
 
         transform.Rotate(0, 180, 0);
+
+        if (enemyData.IsDead)
+        {
+            foreach (Transform t in transform)
+            {
+                t.gameObject.SetActive(false);
+            }
+        }
     }
 
     private void EnemyData_OnGetDamage(float currentHealth)
     {
-        print($"Got damage, current Health is {currentHealth}");
         healthBar.value = currentHealth;
     }
 }

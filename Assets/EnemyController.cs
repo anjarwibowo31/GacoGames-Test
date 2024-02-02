@@ -12,14 +12,15 @@ public class EnemyController : MoveableEntity
     [SerializeField] private Collider swordCollider;
 
     private Animator anim;
-    private int ANIM_BOGU_IDLE_HASH;
-    private int ANIM_BOGU_ATTACK_HASH;
-    private int ANIM_BOGU_DEATH_HASH;
-    private int ANIM_BOGU_HIT_HASH;
+    //private int ANIM_BOGU_IDLE_HASH;
+    //private int ANIM_BOGU_ATTACK_HASH;
+    //private int ANIM_BOGU_DEATH_HASH;
+    //private int ANIM_BOGU_HIT_HASH;
 
     private Transform playerTransform;
     private EnemyData enemyData;
     private bool isAttacking = false;
+    private Collider enemyCollider;
 
     protected override void Start()
     {
@@ -28,24 +29,37 @@ public class EnemyController : MoveableEntity
         playerTransform = PlayerData.Instance.transform;
         anim = GetComponent<Animator>();
         enemyData = GetComponent<EnemyData>();
+        enemyCollider = GetComponent<Collider>();
+        DisableCollider();
     }
 
     private void Update()
     {
-        float playerDistance = Vector3.Distance(transform.position, playerTransform.position);
+        if (enemyData.IsDead)
+        {
+            enemyCollider.enabled = false;
+            anim.Play("Normal_Die");
+            DisableCollider();
+        }
+        else if (!enemyData.IsDead)
+        {
+            enemyCollider.enabled = true;
+            float playerDistance = Vector3.Distance(transform.position, playerTransform.position);
 
-        if (!IsMoveable) return;
-        if (playerDistance < chaseRadius && playerDistance > attackRadius && !isAttacking)
-        {
-            ChasePlayer();
-        }
-        else if (playerDistance < attackRadius)
-        {
-            AttackPlayer();
-        }
-        else
-        {
-            anim.Play("Sword_Idle");
+            if (!IsMoveable) return;
+            if (playerDistance < chaseRadius && playerDistance > attackRadius && !isAttacking)
+            {
+                ChasePlayer();
+                DisableCollider();
+            }
+            else if (playerDistance < attackRadius)
+            {
+                AttackPlayer();
+            }
+            else
+            {
+                anim.Play("Sword_Idle");
+            }
         }
     }
 
@@ -76,8 +90,9 @@ public class EnemyController : MoveableEntity
         anim.Play("Sword_Run");
     }
 
-    public void GetHit(float damage)
+    public void GetDamage(float damage)
     {
+        if (enemyData.IsDead) return;
         IsMoveable = false;
         anim.Play("Normal_Hit");
         enemyData.GetDamage(damage);

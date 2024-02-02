@@ -10,6 +10,8 @@ public class PlayerData : MonoBehaviour, IDamageable
     public static PlayerData Instance { get; set; }
 
     public event Action OnGetDamage;
+    public event Action OnExpChange;
+    public event Action<float> SetupUI;
 
     public int Level { get; set; }
     public float Health { get; set; }
@@ -19,28 +21,28 @@ public class PlayerData : MonoBehaviour, IDamageable
     public float Damage { get; set; }
     public bool IsDead { get; set; }
 
-    // test
-    [SerializeField] private PlayerProgressionSO progressionSO;
-
-    private Dictionary<int, PlayerProgressionSO.LevelData> levelDataDictionary = new();
-
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(this.gameObject);
+    }
 
-        foreach (PlayerProgressionSO.LevelData levelData in progressionSO.LevelDataArray)
-        {
-            levelDataDictionary.Add(levelData.level, levelData);
-        }
+    private void Start()
+    {
+        GameplaySystem.Instance.SetupDataOnStart += GameplaySystem_SetupDataOnStart;
+    }
 
+    private void GameplaySystem_SetupDataOnStart()
+    {
         IsDead = false;
         Level = 1;
-        Health = levelDataDictionary[Level].healthIncrement;
-        MaxHealth = levelDataDictionary[Level].healthIncrement;
+        Health = GameplaySystem.Instance.PlayerProgressDic[Level].healthIncrement;
+        MaxHealth = GameplaySystem.Instance.PlayerProgressDic[Level].healthIncrement;
         ExpPoint = 0;
-        ExpRequirement = levelDataDictionary[Level].expPointRequirement;
-        Damage = levelDataDictionary[Level].attackIncrement;
+        ExpRequirement = GameplaySystem.Instance.PlayerProgressDic[Level].expPointRequirementIncrement;
+        Damage = GameplaySystem.Instance.PlayerProgressDic[Level].attackIncrement;
+
+        SetupUI?.Invoke(0);
     }
 
     public void GetDamage(float damage)
@@ -56,5 +58,25 @@ public class PlayerData : MonoBehaviour, IDamageable
     public void GetExpPoint(float expAmount)
     {
         ExpPoint += expAmount;
+        OnExpChange?.Invoke();
+
+        if (ExpPoint >= ExpRequirement)
+        {
+            //Upgrade event
+            Level++;
+            NextLevelSetup(Level);
+        }
+    }
+
+    public void NextLevelSetup(int level)
+    {
+        ExpPoint -= ExpRequirement;
+
+        Health += GameplaySystem.Instance.PlayerProgressDic[level].healthIncrement;
+        MaxHealth += GameplaySystem.Instance.PlayerProgressDic[level].healthIncrement;
+        Damage += GameplaySystem.Instance.PlayerProgressDic[level].attackIncrement;
+        ExpRequirement = GameplaySystem.Instance.PlayerProgressDic[level].expPointRequirementIncrement;
+
+        SetupUI?.Invoke(ExpPoint);
     }
 }

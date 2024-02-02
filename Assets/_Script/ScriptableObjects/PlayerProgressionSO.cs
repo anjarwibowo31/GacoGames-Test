@@ -10,7 +10,7 @@ public class PlayerProgressionSO : ScriptableObject
     public class LevelData
     {
         public int level;
-        public int expPointRequirement;
+        public int expPointRequirementIncrement;
         public int healthIncrement;
         public int attackIncrement;
     }

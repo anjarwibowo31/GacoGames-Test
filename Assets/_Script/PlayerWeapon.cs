@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class PlayerWeapon : MonoBehaviour
 {
     [SerializeField] private Collider weaponCollider;
     [SerializeField] private TrailRenderer slashVfx;
@@ -11,8 +11,7 @@ public class Weapon : MonoBehaviour
     {
         if (other.TryGetComponent<EnemyController>(out EnemyController component))
         {
-            print(PlayerData.Instance.Damage);
-            component.GetHit(PlayerData.Instance.Damage);
+            component.GetDamage(PlayerData.Instance.Damage);
         }
     }
 
